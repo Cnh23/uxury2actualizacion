@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+
+<main layout:fragment="main">
+	<section class="dashboard">
+		<!-- Jumbotron -->
+		<div class="px-4 py-5 px-md-5 text-center text-lg-start">
+			<div class="about_section row">
+				<!-- Left side columns -->
+				<div class="col-12 col-lg-6">
+					<div class="row">
+
+						<!-- Recent Sales -->
+						<div class="col-12">
+							<div class="card bg-light">
+								<div class="card-body pt-3">
+							<!-- Bordered Tabs -->
+<ul class="nav nav-tabs nav-tabs-bordered">
+        <li class="nav-item">
+            <a class="nav-link link-dark active text-uppercase font-weight-bold" href="#reservas-overview" data-toggle="tab"><i class="bi bi-person-lines-fill mr-3"></i>Reservas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link-dark text-uppercase font-weight-bold" href="#profile-edit" data-toggle="tab"><i class="bi bi-pencil-square mr-3"></i>Editar perfil</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link-dark text-uppercase font-weight-bold" href="#profile-settings" data-toggle="tab"><i class="bi bi-gear mr-3"></i>Configuración</a>
+        </li>
+    </ul>
+
+    <div class="tab-content pt-2">
+        <div class="tab-pane fade" id="reservas-overview">
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">Matricula</th>
+                        <th scope="col">Marca</th>
+                        <th scope="col">Modelo</th>
+                        <th scope="col">Fecha de reserva</th>
+                        <th scope="col">Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="alquiler : ${reservas}">
+                        <td th:text="${alquiler.vehiculo?.matricula}"></td>
+                        <td th:text="${alquiler.vehiculo?.marca}"></td>
+                        <td th:text="${alquiler.vehiculo?.modelo}"></td>
+                        <td th:text="${alquiler.fechaReserva}"></td>
+                        <td>
+                            <i th:text="${alquiler.estado?.estado}" class="bi bi-check-circle mr-2"></i>  
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tab-pane fade" id="profile-edit">
+            <form th:action="@{/modificarusuarioperfil(id=${session.usuario.id})}" th:object="${usuario}" method="post">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label fw-bold text-white">Nombre:</label>
+                    <input placeholder="Nombre" type="text" th:field="*{nombre}" class="form-control" id="nombre" th:name="nombre" th:required="true">
+                </div>
+                <div class="mb-3">
+                    <label for="apellidos" class="form-label fw-bold text-white">Apellidos:</label>
+                    <input placeholder="Apellidos" type="text" th:field="*{apellidos}" class="form-control" id="apellidos" th:name="apellidos" th:required="true">
+                </div>
+                <div class="mb-3">
+                    <label for="dni" class="form-label fw-bold text-white">DNI:</label>
+                    <input placeholder="DNI" type="text" th:field="*{dni}" class="form-control" id="dni" th:name="dni" th:required="true">
+                </div>
+                <div class="mb-3">
+                    <label for="telefono" class="form-label fw-bold text-white">Teléfono:</label>
+                    <input placeholder="Teléfono" type="tel" th:field="*{telefono}" class="form-control" id="telefono" th:name="telefono" th:required="true">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-bold text-white">Email:</label>
+                    <input placeholder="Correo electrónico" type="email" th:field="*{email}" class="form-control" id="email" th:name="email" th:required="true">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Enviar</button>
+                    <a href="/listausuarios" class="btn btn-danger">Volver</a>
+                </div>
+            </form>
+        </div>
+
+    <div class="tab-pane fade" id="profile-settings">
+        <!-- Contenido de Configuración -->
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmacionModal">
+            Darse de baja
+        </button>
+        
+        <!-- Modal de confirmación -->
+        <div class="modal fade" id="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmacionModalLabel">Confirmación de baja</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Estás seguro de que deseas darte de baja? Esta acción no se puede deshacer.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <!-- Enlace para realizar la acción de baja -->
+                        <a th:href="@{/darseDeBaja}" class="btn btn-danger">Darse de baja</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Obtener el botón de "Darse de baja"
+    var darseDeBajaBtn = document.getElementById('darseDeBajaBtn');
+
+    // Agregar el evento de clic al botón
+    darseDeBajaBtn.addEventListener('click', function() {
+        // Mostrar el modal de confirmación
+        $('#confirmacionModal').modal('show');
+    });
+
+    // Obtener el botón de "Confirmar baja"
+    var confirmarBajaBtn = document.getElementById('confirmarBajaBtn');
+
+    // Agregar el evento de clic al botón de "Confirmar baja"
+    confirmarBajaBtn.addEventListener('click', function() {
+        // Redirigir a la página de darse de baja
+        window.location.href = '/darseDeBaja';
+    });
+
+    // Obtener el botón de "Cerrar" del modal
+    var cerrarModalBtn = document.querySelector('#confirmacionModal .close');
+
+    // Agregar el evento de clic al botón de "Cerrar"
+    cerrarModalBtn.addEventListener('click', function() {
+        // Cerrar el modal
+        $('#confirmacionModal').modal('hide');
+    });
+
+    // Obtener el botón de "Cancelar" del modal
+    var cancelarModalBtn = document.querySelector('#confirmacionModal .modal-footer .btn-secondary');
+
+    // Agregar el evento de clic al botón de "Cancelar"
+    cancelarModalBtn.addEventListener('click', function() {
+        // Cerrar el modal
+        $('#confirmacionModal').modal('hide');
+    });
+</script>
+
+    <!-- Agrega aquí tus enlaces a los archivos JavaScript necesarios -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.4.0/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        var navLinks = document.querySelectorAll('.nav-link');
+        var tabContents = document.querySelectorAll('.tab-pane');
+
+        navLinks.forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                var target = link.getAttribute('href');
+
+                tabContents.forEach(function(content) {
+                    content.classList.remove('show', 'active');
+                });
+
+                document.querySelector(target).classList.add('show', 'active');
+            });
+        });
+    </script>
+									<!-- End Bordered Tabs -->
+								</div>
+							</div>
+
+						</div><!-- End Recent Sales -->
+					</div>
+				</div><!-- End Left side columns -->
+
+				<!-- Right side columns -->
+				<div class="col-12 col-lg-6">
+					<div class="card bg-light">
+							<div class="card-body pt-3">
+								<!-- Bordered Tabs -->
+								<ul class="nav nav-tabs nav-tabs-bordered">
+									<li class="nav-item">
+										<button class="nav-link link-dark active text-uppercase font-weight-bold"
+											data-bs-toggle="tab" data-bs-target="#profile-overview"><i
+												class="bi bi-person-lines-fill mr-3"></i>Datos del usuario</button>
+
+									<li class="nav-item">
+										<button class="nav-link link-dark text-uppercase font-weight-bold"
+											data-bs-toggle="tab" data-bs-target="#profile-change-password"><i
+												class="bi bi-shield-check mr-3"></i>Change Password</button>
+									</li>
+								</ul>
+
+								<div class="tab-content pt-2">
+								    <div class="tab-pane fade show active profile-overview" id="profile-overview">
+								        <div class="row">
+								            <div class="col-lg-3 col-md-4 label">Nombre y apellidos</div>
+								            <div class="col-lg-9 col-md-8" th:text="${usuario.nombre} + ' ' + ${usuario.apellidos}"></div>
+								        </div>
+								
+								        <div class="row">
+								            <div class="col-lg-3 col-md-4 label">DNI</div>
+								            <div class="col-lg-9 col-md-8" th:text="${usuario.dni}"></div>
+								        </div>
+								
+								        <div class="row">
+								            <div class="col-lg-3 col-md-4 label">Teléfono</div>
+								            <div class="col-lg-9 col-md-8" th:text="${usuario.telefono}"></div>
+								        </div>
+								
+								        <div class="row">
+								            <div class="col-lg-3 col-md-4 label">Email</div>
+								            <div class="col-lg-9 col-md-8" th:text="${usuario.email}"></div>
+								        </div>
+								    </div>
+								</div>
+
+								<div class="tab-pane fade pt-3" id="profile-change-password">
+								    <!-- Change Password Form -->
+								    <form th:action="@{/cambiarContraseña}" method="post">
+								        <div class="row mb-4">
+								            <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+								            <div class="col-md-8 col-lg-9">
+								                <input name="currentPassword" type="password" class="form-control" id="currentPassword">
+								            </div>
+								        </div>
+								
+								        <div class="row mb-4">
+								            <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+								            <div class="col-md-8 col-lg-9">
+								                <input name="newPassword" type="password" class="form-control" id="newPassword">
+								            </div>
+								        </div>
+								
+								        <div class="row mb-4">
+								            <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+								            <div class="col-md-8 col-lg-9">
+								                <input name="renewPassword" type="password" class="form-control" id="renewPassword">
+								            </div>
+								        </div>
+								
+								        <div class="text-center">
+								            <button type="submit" class="btn btn-dark text-uppercase font-weight-bold">Cambiar contraseña</button>
+								        </div>
+								    </form>
+								    <!-- End Change Password Form -->
+								</div>
+
+								</div>
+								<!-- End Bordered Tabs -->
+							</div>
+						</div>
+				</div>
+				<!-- End Right side columns -->
+			</div>
+
+		</div>
+	</section>
+</main>
+
+</html>
