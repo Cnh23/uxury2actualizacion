@@ -2,6 +2,8 @@ package com.rent.luxury.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,9 +46,11 @@ public class Usuarios {
     
     @ManyToOne
     @JoinColumn(name = "role_id")
+    @JsonIgnore
     private Role role;
     
     @OneToMany(mappedBy="usuarios", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<Alquiler> listaAlquiler;
     
     /**

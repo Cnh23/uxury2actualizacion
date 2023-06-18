@@ -535,9 +535,7 @@ span.current {
 /* select box section end */
 /* search section end */
 
-
 /* gallery section start */
-
 .gallery_section {
     width: 100%;
     float: left;
@@ -652,7 +650,6 @@ span.current {
     color: #fefefd;
     background-color: #f01c1c;
 }
-
 
 /* gallery section end */
 

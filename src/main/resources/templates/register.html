@@ -25,62 +25,104 @@
 					<div class="col-lg-6 mb-5 mb-lg-0">
 						<div class="card bg-glass" style="background-color: #eee;">
 							<div class="card-body py-5 px-md-5">
-								<form>
+								<form class="h-70" th:action="@{/register}"
+										th:object="${usuariosForm}" method="post">
 									<h1 class="banner_taital mb-4">
-										SIGN <span style="color: #FE5B29;">UP</span>
+										REGI<span style="color: #FE5B29;">STRO</span>
 									</h1>
+									<p class="text-primary" th:text=${mensaje}></p>
 									<!-- 2 column grid layout with text inputs for the first and last names -->
 									<div class="row">
 										<div class="col-md-6 mb-4">
 											<div class="form-floating">
-												<input type="text" id="form3Example1" class="form-control" placeholder="Nombre" />
+												<input placeholder="Nombre" type="text" th:field="*{nombre}"
+												class="form-control" id="nombre" name="nombre"
+												th:required="true"
+												th:classappend="${#fields.hasErrors('nombre')}? 'is-invalid'" />
 												<label for="form3Example1">Nombre</label>
+											<div class="invalid-feedback">
+												<span th:if="${#fields.hasErrors('nombre')}"
+													th:errors="*{nombre}"></span>
+											</div>
 											</div>
 										</div>
 										<div class="col-md-6 mb-4">
 											<div class="form-floating">
-												<input type="text" id="form3Example2" class="form-control" placeholder="Apellido" />
-												<label class="form-label" for="form3Example2">Apellido</label>
+												<input placeholder="Apellidos" type="text" th:field="*{apellidos}"
+												class="form-control" id="apellidos" name="apellidos"
+												th:required="true"
+												th:classappend="${#fields.hasErrors('apellidos')}? 'is-invalid'" />
+												<label class="form-label" for="form3Example2">Apellidos</label>
+											<div class="invalid-feedback">
+												<span th:if="${#fields.hasErrors('apellidos')}"
+													th:errors="*{apellidos}"></span>
+											</div>
 											</div>
 										</div>
 									</div>
-
+									<div class="form-floating mb-4">
+										<input placeholder="DNI" type="text" th:field="*{dni}"
+												class="form-control" id="dni" name="dni" th:required="true"
+												th:classappend="${#fields.hasErrors('dni')}? 'is-invalid'" />
+										<label for="form3Example5">DNI</label>
+									<div class="invalid-feedback">
+										<span th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></span>
+									</div>
+									</div>
+									<div class="form-floating mb-4">
+										<input placeholder="Teléfono" type="tel" th:field="*{telefono}"
+												class="form-control" id="telefono" name="telefono"
+												th:required="true"
+												th:classappend="${#fields.hasErrors('telefono')}? 'is-invalid'" />
+										<label for="form3Example6">Teléfono</label>
+											<div class="invalid-feedback">
+												<span th:if="${#fields.hasErrors('telefono')}"
+													th:errors="*{telefono}"></span>
+											</div>
+									</div>
+									<div class="form-floating mb-4">
+										<input placeholder="Dirección" type="tel" th:field="*{direccion}"
+												class="form-control" id="direccion" name="direccion"
+												th:required="true"
+												th:classappend="${#fields.hasErrors('telefono')}? 'is-invalid'"/>
+										<label for="form3Example4">Dirección</label>
+									</div>	
 									<!-- Email input -->
 									<div class="form-floating mb-4">
-										<input type="email" id="form3Example3" class="form-control" placeholder="name@example.com" /> 
-											<label for="form3Example3">Email address</label>
+										<input 	placeholder="Correo electrónico" type="email"
+												th:field="*{email}" class="form-control" id="email"
+												name="email" th:required="true"
+												th:classappend="${#fields.hasErrors('email')}? 'is-invalid'" /> 
+										<label for="form3Example3">Correo electrónico</label>
+																					<div class="invalid-feedback">
+												<span th:if="${#fields.hasErrors('email')}"
+													th:errors="*{email}"></span>
+											</div>
 									</div>
 									<!-- Password input -->
 									<div class="form-floating mb-4">
-										<input type="password" id="form3Example4" class="form-control"
-											placeholder="Password" /> <label for="form3Example4">Password</label>
-									</div>							
+										<input 												placeholder="Contraseña" type="password"
+												th:field="*{password}" class="form-control" id="password"
+												name="password" th:required="true"
+												th:classappend="${#fields.hasErrors('password')}? 'is-invalid'" /> 
+										<label for="form3Example4">Contraseña</label>
+																					<div class="invalid-feedback">
+												<span th:if="${#fields.hasErrors('password')}"
+													th:errors="*{password}"></span>
+											</div>
+									</div>					
 
 									<!-- Submit button -->
 									<button type="submit"
 										class="btn btn-dark btn-block mb-4 font-weight-bold text-uppercase">
-										Sign up</button>
+										REGISTRARSE</button>
 
 									<!-- Register buttons -->
 									<div class="text-center">
-										<p>o inicia sesión con:</p>
-										<button type="button" class="btn btn-dark btn-floating mx-1">
-											<i class="bi bi-facebook"></i>
-										</button>
-
-										<button type="button" class="btn btn-dark btn-floating mx-1">
-											<i class="bi bi-google"></i>
-										</button>
-
-										<button type="button" class="btn btn-dark btn-floating mx-1">
-											<i class="bi bi-twitter"></i>
-										</button>
-
-										<button type="button" class="btn btn-dark btn-floating mx-1">
-											<i class="bi bi-github"></i>
-										</button>
+										<a href="/iniciarsesion" type="button" class="btn btn-dark">
+											Iniciar sesión
+										</a>
 									</div>
-								</form>
 							</div>
 						</div>
 					</div>

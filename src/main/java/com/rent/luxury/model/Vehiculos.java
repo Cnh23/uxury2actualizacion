@@ -2,6 +2,8 @@ package com.rent.luxury.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,6 +49,7 @@ public class Vehiculos {
     private String enlaceImagen;
 
     @OneToMany(mappedBy="vehiculo", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<Alquiler> listaAlquiler;
 
     public Vehiculos(String marca, String modelo, String tipo, String matricula, double kilometraje,

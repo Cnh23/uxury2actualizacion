@@ -7,6 +7,8 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,10 +45,12 @@ public class Alquiler {
     
     @ManyToOne
     @JoinColumn(name = "usuario_id")
+    @JsonIgnore
     private Usuarios usuarios;
 
     @ManyToOne
     @JoinColumn(name = "estado_id")
+    @JsonIgnore
     private Estados estado;
     
     @ManyToOne
@@ -54,6 +58,7 @@ public class Alquiler {
         @JoinColumn(name = "vehiculo_id", referencedColumnName = "id"),
         @JoinColumn(name = "vehiculo_km", referencedColumnName = "kilometraje"),
     })
+    @JsonIgnore
     private Vehiculos vehiculo;
 
     
